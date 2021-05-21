@@ -1,0 +1,18 @@
+version: '3.3'
+services:
+    api_louise:
+      build: .
+      image: erwankerbrat/api_louisette
+      ports:
+        - "7481:5000" 
+      environment:
+        DATABASE_URL: "mysql://root:rootpassword@db:3306/db_test"
+    db:
+      image: mysql:5.7
+      volumes:
+       - ./data-init:/docker-entrypoint-initdb.d  
+      environment:
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: db_test
+          MYSQL_USER: username
+          MYSQL_PASSWORD: password
