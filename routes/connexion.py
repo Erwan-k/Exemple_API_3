@@ -1,33 +1,9 @@
-from flask_restful import Api, Resource, reqparse
-import os
-from sqlalchemy.engine.url import make_url
-import mysql.connector
+from flask_restful import Resource, reqparse
 
 def getMysqlConnection():
 	url = make_url(os.getenv('DATABASE_URL'))
 	mydb = mysql.connector.connect(host=url.host,user=url.username,passwd=url.password,database=url.database)
 	return mydb
-
-def mycursor_execute(sql,mycursor):
-	try:
-		mycursor.execute(sql)
-		return {"statut":True}
-	except Exception as e:
-		return {"statut":False,"erreur":e}
-
-def mycursor_fetchall(mycursor):
-	try:
-		s = mycursor.fetchall()
-		return {"statut":True,"retour":s}
-	except Exception as e:
-		return {"statut":False,"erreur":e}
-
-def mydb_commit(mydb):
-	try:
-		mydb.commit()
-		return {"statut":True}
-	except Exception as e:
-		return {"statut":False,"erreur":e}
 
 
 connexion1_post_args = reqparse.RequestParser()
@@ -49,19 +25,5 @@ class connexion1(Resource):
 		mydb.close()
 
 		return "ok"
-
-
-class connexion2(Resource):
-	def post(self): 
-		mydb = getMysqlConnection()
-		mycursor = mydb.cursor()
-
-		mycursor.execute("SELECT * FROM Utilisateur")
-		resultat = mycursor.fetchall()
-
-		mycursor.close()
-		mydb.close()
-
-		return resultat
 
 

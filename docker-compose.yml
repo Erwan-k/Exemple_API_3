@@ -1,14 +1,14 @@
 version: '3.3'
 services:
-    api_louise:
+    api:
       build: .
-      image: erwankerbrat/api_louisette
+      image: erwankerbrat/exemple_api_3
       ports:
         - "7481:5000" 
       environment:
         DATABASE_URL: "mysql://root:rootpassword@db:3306/db_test"
     db:
-      image: mysql:5.7
+      image: erwankerbrat/copie_mysql
       volumes:
        - ./data-init:/docker-entrypoint-initdb.d  
       environment:
